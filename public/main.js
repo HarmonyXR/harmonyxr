@@ -3,6 +3,7 @@ import { OrbitControls } from './libs/OrbitControls.js';
 import { VRButton } from './libs/VRButton.js';
 import { XRControllerModelFactory } from './libs/XRControllerModelFactory.js';
 import { GLTFLoader } from './libs/loaders/GLTFLoader.js';
+import {PlayerData} from "./types/PlayerData.js";
 
 let container;
 let camera, scene, renderer;
@@ -13,7 +14,7 @@ const box = new THREE.Box3();
 const controllers = [];
 const oscillators = [];
 let controls, group;
-let partner;
+var partner;
 let audioCtx = null;
 
 // minor pentatonic scale, so whichever notes is striked would be more pleasant
@@ -331,37 +332,17 @@ var cnt = 0;
 function render() {
 
     handleCollisions();
-    // "use strict";
-    //console.log("conn.on")
+
     cnt++
     if (cnt === 60) {
         cnt = 0;
-        // for문을 돌리는게 문제가 아니라 send가 아무런 배경없이 나온것이 문제 -> socket으로 바꿔서 throw
-        // socket.emit("throwPositions", socket.id, username, camera.position, camera.rotation, controller1.position, controller2.position);
+        let playerData = new PlayerData(camera, controller1, controller2);
         conns.forEach((conn) => {
             console.log("conn.on", username);
-            conn.send({
-                // 유저 id
-                username: username,
-                // head 위치와 회전
-                position: camera.position,
-                rotation: {
-                    x: camera.rotation.x,
-                    y: camera.rotation.y,
-                    z: camera.rotation.z,
-                },
-                //손의 위치 -> 손의 회전값은 안보내도 될까?
-                controllerL: controller1.position,
-                controllerR: controller2.position
 
-            });
+            conn.send(playerData);
         });
     }
 
-    // socket.on("getPositions", (sockid, user, cPos,cRot, con1Pos,con2Pos)=>{
-    //   console.log("sockid : "+sockid)
-    //   console.log("user : "+user)
-
-    // })
     renderer.render(scene, camera);
 }
