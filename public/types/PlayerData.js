@@ -1,6 +1,10 @@
 class PlayerData {
   constructor(camera, controller1, controller2) {
-    this.position = camera.position;
+    this.position = {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z
+    }
     this.rotation = {
       x: camera.rotation.x,
       y: camera.rotation.y,
