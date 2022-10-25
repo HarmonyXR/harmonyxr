@@ -3,6 +3,8 @@ import { OrbitControls } from './libs/OrbitControls.js';
 import { VRButton } from './libs/VRButton.js';
 import { XRControllerModelFactory } from './libs/XRControllerModelFactory.js';
 import { GLTFLoader } from './libs/loaders/GLTFLoader.js';
+import { Networking } from './networking.js';
+import {PlayerData} from "./types/PlayerData.js";
 
 let container;
 let camera, scene, renderer;
@@ -13,13 +15,14 @@ const box = new THREE.Box3();
 const controllers = [];
 const oscillators = [];
 let controls, group;
-let partner;
 let audioCtx = null;
+let networking;
 
 // let partnerHead;
 let partnerRightHand;
 let partnerLeftHand;
 let v = new THREE.Vector3();
+let username = prompt('Enter username', Math.random().toString(36).substring(2, 12));
 // minor pentatonic scale, so whichever notes is striked would be more pleasant
 const musicScale = [0, 3, 5, 7, 10];
 
@@ -59,7 +62,7 @@ function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x808080);
 
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10);
+    camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 10);
     camera.position.set(0, 1.6, 3);
 
     controls = new OrbitControls(camera, container);
@@ -159,6 +162,7 @@ function init() {
         object.position.set(-0.5, 0.5, 0);
         partnerRightHand.add(object);
     })
+    
 
     //
 
@@ -204,6 +208,9 @@ function init() {
 
     window.addEventListener('resize', onWindowResize);
 
+    networking = new Networking(camera, controller1, controller2, roomname, username, scene);
+
+    // setInterval(networking.broadcastToPlayers, 1000);
 }
 
 function controllerConnected(evt) {
@@ -370,46 +377,17 @@ function updatePartnerAvatar() {
     // partner.rotation.y += 0.01;
 
     
-    
-
 }
+let cnt = 0;
 
-var cnt = 0;
 function render() {
     updatePartnerAvatar(); //일단 양손 계속 앞으로 하게해놨음 함수 수정하면됩니다.
     partnerCollisions(); //파트너가 실로폰에 닿으면 console에 log가 뜹니다. 하지만 실로폰이 떨리진 않음. 이유는 모르겠습니다...
     handleCollisions();
-    // "use strict";
-    //console.log("conn.on")
-    cnt++
-    if (cnt === 60) {
+    if(cnt == 10 ) {
         cnt = 0;
-        // for문을 돌리는게 문제가 아니라 send가 아무런 배경없이 나온것이 문제 -> socket으로 바꿔서 throw
-        // socket.emit("throwPositions", socket.id, username, camera.position, camera.rotation, controller1.position, controller2.position);
-        conns.forEach((conn) => {
-            console.log("conn.on", username);
-            conn.send({
-                // 유저 id
-                username: username,
-                // head 위치와 회전
-                position: camera.position,
-                rotation: {
-                    x: camera.rotation.x,
-                    y: camera.rotation.y,
-                    z: camera.rotation.z,
-                },
-                //손의 위치 -> 손의 회전값은 안보내도 될까?
-                controllerL: controller1.position,
-                controllerR: controller2.position
-
-            });
-        });
+        networking.broadcastToPlayers();
     }
-
-    // socket.on("getPositions", (sockid, user, cPos,cRot, con1Pos,con2Pos)=>{
-    //   console.log("sockid : "+sockid)
-    //   console.log("user : "+user)
-
-    // })
+    cnt++;
     renderer.render(scene, camera);
 }
