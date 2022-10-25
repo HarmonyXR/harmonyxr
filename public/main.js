@@ -324,22 +324,10 @@ function handleCollisions() {
 //     }
 // }
 
-function updatePartnerAvatar() {
-    //you can change head angle down here
-    
-    // partner.children[0].position.y += 0.01; //머리 오브젝트 
-    partner.children[1].position.z -= 0.002; //오른손 오브젝트
-    partner.children[2].position.z -= 0.001; //왼손 오브젝트
-
-    // partner.rotation.y += 0.01;
-
-    
-}
 let cnt = 0;
 
 function render() {
-    updatePartnerAvatar(); //일단 양손 계속 앞으로 하게해놨음 함수 수정하면됩니다.
-    partnerCollisions(); //파트너가 실로폰에 닿으면 console에 log가 뜹니다. 하지만 실로폰이 떨리진 않음. 이유는 모르겠습니다...
+    // partnerCollisions(); //파트너가 실로폰에 닿으면 console에 log가 뜹니다. 하지만 실로폰이 떨리진 않음. 이유는 모르겠습니다...
     handleCollisions();
     if(cnt == 10 ) {
         cnt = 0;
