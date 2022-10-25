@@ -18,10 +18,7 @@ let controls, group;
 let audioCtx = null;
 let networking;
 
-// let partnerHead;
-let partnerRightHand;
-let partnerLeftHand;
-let v = new THREE.Vector3();
+let v = new THREE.Vector3(); // vector temp for compare collision
 let username = prompt('Enter username', Math.random().toString(36).substring(2, 12));
 // minor pentatonic scale, so whichever notes is striked would be more pleasant
 const musicScale = [0, 3, 5, 7, 10];
@@ -96,10 +93,6 @@ function init() {
     group.position.z = - 0.5;
     scene.add(group);
 
-    partner = new THREE.Group();
-    // group.position.z = - 0.5;
-    scene.add(partner);
-
 
 
     const BOXES = 10;
@@ -129,43 +122,7 @@ function init() {
         group.add(object);
 
     }
-    // //이렇게 한번 group에 바로 gltf클래스를 넣는게 아니라 한번 object3d에 감싸서 다시 넣어주면 제대로 접근가능함
-    // let partnerHead = new THREE.Object3D();
-    // partner.add(partnerHead);
-    // partnerRightHand = new THREE.Object3D();
-    // partner.add(partnerRightHand);
-    // partnerLeftHand = new THREE.Object3D();
-    // partner.add(partnerLeftHand);
-
-    // // GLTFLOADER
-    // const loader = new GLTFLoader().setPath('/resources/head/');
-    // loader.load('scene.gltf', function (gltf) {
-    //     let object = gltf.scene;
-    //     object.scale.set(1.0, 1.0, 1.0);
-    //     object.position.set(0, 1, 0);
-    //     let y_angle = 180;
-    //     y_angle = y_angle * 3.14 / 180.0;
-    //     object.rotation.set(0, y_angle, 0);
-    //     partnerHead.add(object);
-    // })
-    // loader.setPath('/resources/hand/');
-    // loader.load('scene.gltf', function (gltf) {
-    //     let object = gltf.scene;
-    //     object.scale.set(0.01, 0.01, 0.01);
-    //     object.position.set(0.5, 0.5, 0);
-    //     partnerLeftHand.add(object);
-    // })
-
-    // loader.load('scene.gltf', function (gltf) {
-    //     let object = gltf.scene;
-    //     object.scale.set(0.01, 0.01, 0.01);
-    //     object.position.set(-0.5, 0.5, 0);
-    //     partnerRightHand.add(object);
-    // })
     
-
-    //
-
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -337,35 +294,35 @@ function handleCollisions() {
 
 }
 
-function partnerCollisions(){ //따로 빼야하는데 Partner.js로 빼기힘들어보인다고 생각함.
+// function partnerCollisions(){ //따로 빼야하는데 Partner.js로 빼기힘들어보인다고 생각함.
 
-    for(let g =0; g < partner.children.length; g++){
+//     for(let g =0; g < partner.children.length; g++){
 
-        for (let i = 0; i < group.children.length; i++) {
-            const child = group.children[i];
-            box.setFromObject(child);
-            partner.children[g].getWorldPosition(v);//왜 실제 월드 좌표가 아니라 로컬로 나올까 실제좌표로 되도록 수정해야함.
-            const sphere = {
-                radius: 0.03,
-                center: v
-            };
-            console.log(v)
-            if (box.intersectsSphere(sphere)) {//왼손이랑 닿았을때
-                console.log("접촉함!!!!")// 제대로 작동함
-                child.material.emissive.b = 1;
-                const intensity = child.userData.index / group.children.length;
-                child.scale.setScalar(1 + Math.random() * 0.1 * intensity);//왜 아무일도 안일어나지?
-                // child.position.z -= 0.01; //디버깅용
-                // group.position.z -= 0.01; //디버깅용
-                const musicInterval = musicScale[child.userData.index % musicScale.length] + 12 * Math.floor(child.userData.index / musicScale.length);
-                // oscillators[g].frequency.value = 110 * Math.pow(2, musicInterval / 12);
-                // group.children[i].collided = true;
+//         for (let i = 0; i < group.children.length; i++) {
+//             const child = group.children[i];
+//             box.setFromObject(child);
+//             partner.children[g].getWorldPosition(v);//왜 실제 월드 좌표가 아니라 로컬로 나올까 실제좌표로 되도록 수정해야함.
+//             const sphere = {
+//                 radius: 0.03,
+//                 center: v
+//             };
+//             console.log(v)
+//             if (box.intersectsSphere(sphere)) {//왼손이랑 닿았을때
+//                 console.log("접촉함!!!!")// 제대로 작동함
+//                 child.material.emissive.b = 1;
+//                 const intensity = child.userData.index / group.children.length;
+//                 child.scale.setScalar(1 + Math.random() * 0.1 * intensity);//왜 아무일도 안일어나지?
+//                 // child.position.z -= 0.01; //디버깅용
+//                 // group.position.z -= 0.01; //디버깅용
+//                 const musicInterval = musicScale[child.userData.index % musicScale.length] + 12 * Math.floor(child.userData.index / musicScale.length);
+//                 // oscillators[g].frequency.value = 110 * Math.pow(2, musicInterval / 12);
+//                 // group.children[i].collided = true;
     
-            }
+//             }
     
-        }
-    }
-}
+//         }
+//     }
+// }
 
 function updatePartnerAvatar() {
     //you can change head angle down here
