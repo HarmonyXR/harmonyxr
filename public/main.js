@@ -129,39 +129,39 @@ function init() {
         group.add(object);
 
     }
-    //이렇게 한번 group에 바로 gltf클래스를 넣는게 아니라 한번 object3d에 감싸서 다시 넣어주면 제대로 접근가능함
-    let partnerHead = new THREE.Object3D();
-    partner.add(partnerHead);
-    partnerRightHand = new THREE.Object3D();
-    partner.add(partnerRightHand);
-    partnerLeftHand = new THREE.Object3D();
-    partner.add(partnerLeftHand);
+    // //이렇게 한번 group에 바로 gltf클래스를 넣는게 아니라 한번 object3d에 감싸서 다시 넣어주면 제대로 접근가능함
+    // let partnerHead = new THREE.Object3D();
+    // partner.add(partnerHead);
+    // partnerRightHand = new THREE.Object3D();
+    // partner.add(partnerRightHand);
+    // partnerLeftHand = new THREE.Object3D();
+    // partner.add(partnerLeftHand);
 
-    // GLTFLOADER
-    const loader = new GLTFLoader().setPath('/resources/head/');
-    loader.load('scene.gltf', function (gltf) {
-        let object = gltf.scene;
-        object.scale.set(1.0, 1.0, 1.0);
-        object.position.set(0, 1, 0);
-        let y_angle = 180;
-        y_angle = y_angle * 3.14 / 180.0;
-        object.rotation.set(0, y_angle, 0);
-        partnerHead.add(object);
-    })
-    loader.setPath('/resources/hand/');
-    loader.load('scene.gltf', function (gltf) {
-        let object = gltf.scene;
-        object.scale.set(0.01, 0.01, 0.01);
-        object.position.set(0.5, 0.5, 0);
-        partnerLeftHand.add(object);
-    })
+    // // GLTFLOADER
+    // const loader = new GLTFLoader().setPath('/resources/head/');
+    // loader.load('scene.gltf', function (gltf) {
+    //     let object = gltf.scene;
+    //     object.scale.set(1.0, 1.0, 1.0);
+    //     object.position.set(0, 1, 0);
+    //     let y_angle = 180;
+    //     y_angle = y_angle * 3.14 / 180.0;
+    //     object.rotation.set(0, y_angle, 0);
+    //     partnerHead.add(object);
+    // })
+    // loader.setPath('/resources/hand/');
+    // loader.load('scene.gltf', function (gltf) {
+    //     let object = gltf.scene;
+    //     object.scale.set(0.01, 0.01, 0.01);
+    //     object.position.set(0.5, 0.5, 0);
+    //     partnerLeftHand.add(object);
+    // })
 
-    loader.load('scene.gltf', function (gltf) {
-        let object = gltf.scene;
-        object.scale.set(0.01, 0.01, 0.01);
-        object.position.set(-0.5, 0.5, 0);
-        partnerRightHand.add(object);
-    })
+    // loader.load('scene.gltf', function (gltf) {
+    //     let object = gltf.scene;
+    //     object.scale.set(0.01, 0.01, 0.01);
+    //     object.position.set(-0.5, 0.5, 0);
+    //     partnerRightHand.add(object);
+    // })
     
 
     //
@@ -337,7 +337,7 @@ function handleCollisions() {
 
 }
 
-function partnerCollisions(){
+function partnerCollisions(){ //따로 빼야하는데 Partner.js로 빼기힘들어보인다고 생각함.
 
     for(let g =0; g < partner.children.length; g++){
 
