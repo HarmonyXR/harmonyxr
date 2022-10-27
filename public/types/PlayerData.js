@@ -10,8 +10,16 @@ class PlayerData {
       y: camera.rotation.y,
       z: camera.rotation.z
     }
-    this.controller1 = controller1.position;
-    this.controller2 = controller2.position;
+    this.controller1 = {
+      x: controller1.position.x,
+      y: controller1.position.y,
+      z: controller1.position.z,
+    }
+    this.controller2 = {
+      x: controller2.position.x,
+      y: controller2.position.y,
+      z: controller2.position.z,
+    }
   }
 
 };
