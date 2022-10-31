@@ -53,19 +53,18 @@ constructor (conn){
         this.partner.position.x = data.position.x;
         this.partner.position.y = data.position.y;
         this.partner.position.z = data.position.z;
-        this.partner.rotation.x = data.rotation.x;
-        this.partner.rotation.y = data.rotation.y;
-        this.partner.rotation.z = data.rotation.z;
-
+        
+        this.head.rotation.x = data.rotation.x;
+        this.head.rotation.y = data.rotation.y;
+        this.head.rotation.z = data.rotation.z;
         // TODO:
         // 컨트롤러 위치가 미묘하게 이상함. 고쳐야함
-        this.partner.getObjectByName("leftHand").position.x = data.controller1.x - data.position.x;
-        this.partner.getObjectByName("leftHand").position.y = data.controller1.y - data.position.y;
-        this.partner.getObjectByName("leftHand").position.z = data.controller1.z - data.position.z;
-        this.partner.getObjectByName("rightHand").position.x = data.controller2.x - data.position.x;
-        this.partner.getObjectByName("rightHand").position.y = data.controller2.y - data.position.y;
-        this.partner.getObjectByName("rightHand").position.z = data.controller2.z - data.position.z;
-
+        this.partner.getObjectByName("leftHand").position.x = data.controller1.position.x - data.position.x;
+        this.partner.getObjectByName("leftHand").position.y = data.controller1.position.y - data.position.y;
+        this.partner.getObjectByName("leftHand").position.z = data.controller1.position.z - data.position.z;
+        this.partner.getObjectByName("rightHand").position.x = data.controller2.position.x - data.position.x;
+        this.partner.getObjectByName("rightHand").position.y = data.controller2.position.y - data.position.y;
+        this.partner.getObjectByName("rightHand").position.z = data.controller2.position.z - data.position.z;
       });
 
     });
