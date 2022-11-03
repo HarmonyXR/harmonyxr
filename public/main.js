@@ -5,6 +5,7 @@ import { XRControllerModelFactory } from './libs/XRControllerModelFactory.js';
 import { GLTFLoader } from './libs/loaders/GLTFLoader.js';
 import { Networking } from './networking.js';
 import {PlayerData} from "./types/PlayerData.js";
+import {Piano} from './types/Piano.js';
 
 let container;
 let partners = new Array();
@@ -18,6 +19,7 @@ const oscillators = [];
 let controls, group;
 let audioCtx = null;
 let networking;
+let piano;
 
 let v = new THREE.Vector3(); // vector temp for compare collision
 let username = prompt('Enter username', Math.random().toString(36).substring(2, 12));
@@ -122,6 +124,10 @@ function init() {
         group.add(object);
 
     }
+
+    piano = new Piano();
+    console.log(piano.object);
+    scene.add(piano.object);
     
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -130,7 +136,7 @@ function init() {
     renderer.shadowMap.enabled = true;
     renderer.xr.enabled = true;
     container.appendChild(renderer.domElement);
-
+    scene
     document.body.appendChild(VRButton.createButton(renderer));
 
     document.getElementById('VRButton').addEventListener('click', () => {
@@ -213,9 +219,7 @@ function animate() {
 function handleCollisions() {
 
     for (let i = 0; i < group.children.length; i++) {
-
         group.children[i].collided = false;
-
     }
 
     for (let g = 0; g < controllers.length; g++) {
@@ -335,6 +339,8 @@ let cnt = 0;
 function render() {
     handleCollisions();
     partnerCollisions(); //파트너가 실로폰에 닿으면 console에 log가 뜹니다. 하지만 실로폰이 떨리진 않음. 이유는 모르겠습니다...
+    piano.handleCollisions();
+
     if(cnt == 1 ) {
         cnt = 0;
         networking.broadcastToPlayers();
