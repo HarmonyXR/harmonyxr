@@ -155,10 +155,11 @@ class Piano {
     for (let key of this.keys) {
       if (!key.object.collided) {
         // reset uncollided boxes
+        key.object.position.y += 10;
         key.playing = false;
       } else if(!key.playing) {
         key.playing = true;
-        key.object.position -= 10;
+        key.object.position.y -= 10;
         key.sound.play();
       }
     }
