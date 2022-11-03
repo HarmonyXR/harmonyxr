@@ -5,6 +5,7 @@ import { XRControllerModelFactory } from './libs/XRControllerModelFactory.js';
 import { GLTFLoader } from './libs/loaders/GLTFLoader.js';
 import { Networking } from './networking.js';
 import {PlayerData} from "./types/PlayerData.js";
+import { Drum } from './types/drum.js';
 
 let container;
 let partners = new Array();
@@ -122,6 +123,10 @@ function init() {
         group.add(object);
 
     }
+    let drum = new Drum();
+    scene.add(drum.scene);
+    console.log(drum.scene)
+
     
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
