@@ -94,7 +94,9 @@ function init() {
     group.position.z = - 0.5;
     scene.add(group);
 
-
+    const listener = new THREE.AudioListener();
+    camera.add( listener );
+    const sound = new THREE.Audio( listener );
 
     const BOXES = 10;
 
@@ -123,10 +125,9 @@ function init() {
         group.add(object);
 
     }
-    let drum = new Drum();
+    let drum = new Drum(sound);
     scene.add(drum.scene);
-    console.log(drum.scene)
-
+    // console.log(drum.scene)
     
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -218,9 +219,7 @@ function animate() {
 function handleCollisions() {
 
     for (let i = 0; i < group.children.length; i++) {
-
         group.children[i].collided = false;
-
     }
 
     for (let g = 0; g < controllers.length; g++) {
@@ -299,8 +298,7 @@ function handleCollisions() {
 
 }
 
-// TODO:
-// 파트너가 손으로 악기를 건드리면 소리가 나게 고쳐야함. 현재는 안되서 주석처리
+
 function partnerCollisions(){ 
 
     for (let i = 0; i < group.children.length; i++) {
@@ -332,7 +330,7 @@ function partnerCollisions(){
 
             }
         }
-        }
+    }
 }
 
 let cnt = 0;
