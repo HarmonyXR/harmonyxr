@@ -5,7 +5,7 @@ import { XRControllerModelFactory } from './libs/XRControllerModelFactory.js';
 import { GLTFLoader } from './libs/loaders/GLTFLoader.js';
 import { Networking } from './networking.js';
 import {PlayerData} from "./types/PlayerData.js";
-import { Drum } from './types/drum.js';
+import { Drum } from './types/Drum.js';
 
 let container;
 let partners = new Array();
