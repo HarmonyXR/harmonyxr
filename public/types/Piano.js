@@ -81,7 +81,7 @@ class Piano {
   }
 
   // 충돌 처리 함수
-  handleCollisions(partners, controllers, sound) {
+  handleCollisions(partners, controllers) {
     for (let key of this.keys) {
       key.object.collided = false;
     }

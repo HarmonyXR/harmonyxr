@@ -21,6 +21,7 @@ let audioCtx = null;
 let networking;
 let piano;
 
+let listener = new THREE.AudioListener();
 let v = new THREE.Vector3(); // vector temp for compare collision
 let username = prompt('Enter username', Math.random().toString(36).substring(2, 12));
 // minor pentatonic scale, so whichever notes is striked would be more pleasant
@@ -125,7 +126,8 @@ function init() {
 
     }
 
-    piano = new Piano();
+    camera.add(listener);
+    piano = new Piano(listener);
     console.log(piano.object);
     scene.add(piano.object);
     
@@ -339,7 +341,7 @@ let cnt = 0;
 function render() {
     handleCollisions();
     partnerCollisions(); //파트너가 실로폰에 닿으면 console에 log가 뜹니다. 하지만 실로폰이 떨리진 않음. 이유는 모르겠습니다...
-    piano.handleCollisions();
+    piano.handleCollisions(partners, controllers);
 
     if(cnt == 1 ) {
         cnt = 0;
