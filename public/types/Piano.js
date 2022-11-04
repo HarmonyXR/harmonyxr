@@ -21,7 +21,7 @@ class Piano {
         let sound = new THREE.Audio(listener);
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
-        sound.setVolume(0.5);
+        sound.setVolume(1);
         let box = new THREE.Box3();
         let object = this.object.getObjectByName("White_11");
         box.setFromObject(object);
@@ -37,7 +37,7 @@ class Piano {
         let sound = new THREE.Audio(listener);
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
-        sound.setVolume(0.5);
+        sound.setVolume(1);
         let box = new THREE.Box3();
         let object = this.object.getObjectByName("White001_10");
         box.setFromObject(object);
@@ -53,7 +53,7 @@ class Piano {
         let sound = new THREE.Audio(listener);
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
-        sound.setVolume(0.5);
+        sound.setVolume(1);
         let box = new THREE.Box3();
         let object = this.object.getObjectByName("White002_12");
         box.setFromObject(object);
@@ -69,7 +69,7 @@ class Piano {
         let sound = new THREE.Audio(listener);
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
-        sound.setVolume(0.5);
+        sound.setVolume(1);
         let box = new THREE.Box3();
         let object = this.object.getObjectByName("White003_13");
         box.setFromObject(object);
@@ -85,7 +85,7 @@ class Piano {
         let sound = new THREE.Audio(listener);
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
-        sound.setVolume(0.5);
+        sound.setVolume(1);
         let box = new THREE.Box3();
         let object = this.object.getObjectByName("White004_14");
         box.setFromObject(object);
@@ -101,7 +101,7 @@ class Piano {
         let sound = new THREE.Audio(listener);
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
-        sound.setVolume(0.5);
+        sound.setVolume(1);
         let box = new THREE.Box3();
         let object = this.object.getObjectByName("White005_15");
         box.setFromObject(object);
@@ -117,7 +117,7 @@ class Piano {
         let sound = new THREE.Audio(listener);
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
-        sound.setVolume(0.5);
+        sound.setVolume(1);
         let box = new THREE.Box3();
         let object = this.object.getObjectByName("White006_16");
         box.setFromObject(object);
@@ -145,7 +145,7 @@ class Piano {
         for (let key of this.keys) {
           part.getWorldPosition(v);
           const sphere = {
-            radius: 0.03,
+            radius: 0.02,
             center: v
           };
           // console.log(v)
@@ -174,19 +174,19 @@ class Piano {
         }
       }
 
-      if (controller.colliding) {
-        if (!controller.playing) {
-          controller.playing = true;
-          const supportHaptic = 'hapticActuators' in gamepad && gamepad.hapticActuators != null && gamepad.hapticActuators.length > 0;
-          if (supportHaptic) {
-            gamepad.hapticActuators[0].pulse(0.5, 100);
-          }
-        }
-      } else {
-        if (controller.playing) {
-          controller.playing = false;
-        }
-      }
+      // if (controller.colliding) {
+      //   if (!controller.playing) {
+      //     controller.playing = true;
+      //     const supportHaptic = 'hapticActuators' in gamepad && gamepad.hapticActuators != null && gamepad.hapticActuators.length > 0;
+      //     if (supportHaptic) {
+      //       gamepad.hapticActuators[0].pulse(0.5, 100);
+      //     }
+      //   }
+      // } else {
+      //   if (controller.playing) {
+      //     controller.playing = false;
+      //   }
+      // }
     }
 
     // 충돌이 일어난거로 확인된 키들에 대한 처리
@@ -199,6 +199,10 @@ class Piano {
         console.log("play start")
         key.playing = true;
         key.object.position.y -= 8;
+        console.log(key.sound);
+        if (key.sound.isPlaying) {
+          key.sound.stop();
+        }
         key.sound.play();
       }
     }
