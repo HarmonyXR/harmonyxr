@@ -53,8 +53,9 @@ class Drum{
         let v = new THREE.Vector3(); // vector temp for compare collision
         let drumNum = 0;
 
-        // TODO :
-        // Partner의 controller와 drum의 충돌처리
+        for(let j=0; j<this.drums.length ; j++){
+            this.drums[j].object.collided=false;
+        }
 
         for(let j =0; j < partners.length; j++){
             for(let g =0; g < partners[j].partner.children.length; g++){ // partner의 손1, 손2
@@ -84,6 +85,7 @@ class Drum{
         for (let g = 0; g < controllers.length; g++) {
             const controller = controllers[g];
             controller.colliding = false;
+            
     
             const { grip, gamepad } = controller;
             const sphere = {
