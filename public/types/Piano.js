@@ -22,9 +22,14 @@ class Piano {
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
         sound.setVolume(0.5);
+        let box = new THREE.Box3();
+        let object = this.object.getObjectByName("White_11");
+        box.setFromObject(object);
         this.keys.push({
-          object: this.object.getObjectByName("White_11"),
+          object: object,
+          box: box,
           sound: sound,
+          collided: false,
           playing: false
         });
       });
@@ -33,9 +38,14 @@ class Piano {
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
         sound.setVolume(0.5);
+        let box = new THREE.Box3();
+        let object = this.object.getObjectByName("White001_10");
+        box.setFromObject(object);
         this.keys.push({
-          object: this.object.getObjectByName("White001_10"),
+          object: object,
+          box: box,
           sound: sound,
+          collided: false,
           playing: false
         });
       });
@@ -44,9 +54,14 @@ class Piano {
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
         sound.setVolume(0.5);
+        let box = new THREE.Box3();
+        let object = this.object.getObjectByName("White002_12");
+        box.setFromObject(object);
         this.keys.push({
-          object: this.object.getObjectByName("White002_12"),
+          object: object,
+          box: box,
           sound: sound,
+          collided: false,
           playing: false
         });
       });
@@ -55,9 +70,14 @@ class Piano {
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
         sound.setVolume(0.5);
+        let box = new THREE.Box3();
+        let object = this.object.getObjectByName("White003_13");
+        box.setFromObject(object);
         this.keys.push({
-          object: this.object.getObjectByName("White003_13"),
+          object: object,
+          box: box,
           sound: sound,
+          collided: false,
           playing: false
         });
       });
@@ -66,9 +86,14 @@ class Piano {
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
         sound.setVolume(0.5);
+        let box = new THREE.Box3();
+        let object = this.object.getObjectByName("White004_14");
+        box.setFromObject(object);
         this.keys.push({
-          object: this.object.getObjectByName("White004_14"),
+          object: object,
+          box: box,
           sound: sound,
+          collided: false,
           playing: false
         });
       });
@@ -77,9 +102,14 @@ class Piano {
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
         sound.setVolume(0.5);
+        let box = new THREE.Box3();
+        let object = this.object.getObjectByName("White005_15");
+        box.setFromObject(object);
         this.keys.push({
-          object: this.object.getObjectByName("White005_15"),
+          object: object,
+          box: box,
           sound: sound,
+          collided: false,
           playing: false
         });
       });
@@ -88,9 +118,14 @@ class Piano {
         sound.setBuffer(soundBuffer);
         sound.setLoop(false);
         sound.setVolume(0.5);
+        let box = new THREE.Box3();
+        let object = this.object.getObjectByName("White006_16");
+        box.setFromObject(object);
         this.keys.push({
-          object: this.object.getObjectByName("White006_16"),
+          object: object,
+          box: box,
           sound: sound,
+          collided: false,
           playing: false
         });
       });
@@ -99,26 +134,24 @@ class Piano {
 
   // 충돌 처리 함수
   handleCollisions(partners, controllers) {
-    let box = new THREE.Box3();
     let v = new THREE.Vector3(); // vector temp for compare collision
     for (let key of this.keys) {
-      key.object.collided = false;
+      key.collided = false;
     }
 
     // 파트너와의 충돌 체크
     for (let partner of partners) {
       for (let part of partner.partner.children) {
         for (let key of this.keys) {
-          box.setFromObject(key.object);
           part.getWorldPosition(v);
           const sphere = {
             radius: 0.03,
             center: v
           };
           // console.log(v)
-          if (box.intersectsSphere(sphere)) {//왼손이랑 닿았을때
+          if (key.box.intersectsSphere(sphere)) {//왼손이랑 닿았을때
             part.colliding = true;
-            key.object.collided = true;
+            key.collided = true;
           }
         }
       }
@@ -134,19 +167,17 @@ class Piano {
         center: grip.position
       };
 
-      const supportHaptic = 'hapticActuators' in gamepad && gamepad.hapticActuators != null && gamepad.hapticActuators.length > 0;
-
       for (let key of this.keys) {
-        box.setFromObject(key.object);
-        if (box.intersectsSphere(sphere)) {
+        if (key.box.intersectsSphere(sphere)) {
           controller.colliding = true;
-          key.object.collided = true;
+          key.collided = true;
         }
       }
 
       if (controller.colliding) {
         if (!controller.playing) {
           controller.playing = true;
+          const supportHaptic = 'hapticActuators' in gamepad && gamepad.hapticActuators != null && gamepad.hapticActuators.length > 0;
           if (supportHaptic) {
             gamepad.hapticActuators[0].pulse(0.5, 100);
           }
@@ -160,11 +191,11 @@ class Piano {
 
     // 충돌이 일어난거로 확인된 키들에 대한 처리
     for (let key of this.keys) {
-      if (!key.object.collided && key.playing) {
+      if (!key.collided && key.playing) {
         console.log("play finish");
         key.object.position.y += 8;
         key.playing = false;
-      } else if (key.object.collided && !key.playing) {
+      } else if (key.collided && !key.playing) {
         console.log("play start")
         key.playing = true;
         key.object.position.y -= 8;
