@@ -96,7 +96,7 @@ function init() {
 
     const listener = new THREE.AudioListener();
     camera.add( listener );
-    const sound = new THREE.Audio( listener );
+    
 
     const BOXES = 10;
 
@@ -125,7 +125,7 @@ function init() {
         group.add(object);
 
     }
-    let drum = new Drum(sound);
+    let drum = new Drum(listener);
     scene.add(drum.scene);
     // console.log(drum.scene)
     
@@ -320,7 +320,7 @@ function partnerCollisions(){
                     // console.log("접촉함!!!!")// 제대로 작동함
                     child.material.emissive.b = 1;
                     const intensity = child.userData.index / group.children.length;
-                    child.scale.setScalar(1 + Math.random() * 0.1 * intensity);//왜 아무일도 안일어나지?
+                    child.scale.setScalar(1 + Math.random() * 0.1 * intensity);
                     const musicInterval = musicScale[child.userData.index % musicScale.length] + 12 * Math.floor(child.userData.index / musicScale.length);
                     // oscillators[g].frequency.value = 110 * Math.pow(2, musicInterval / 12);
                     // controller.colliding = true;

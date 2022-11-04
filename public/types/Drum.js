@@ -2,63 +2,60 @@ import * as THREE from '../build/three.module.js';
 import { GLTFLoader } from '../libs/loaders/GLTFLoader.js';
 
 class Drum{
-    constructor(sound){
+    constructor(listener){
         this.scene = new THREE.Object3D();
         this.drums = new Array();
         this.drumAudios = new Array();
-        this.sound = sound;
+        const audioLoader = new THREE.AudioLoader();
         
          // GLTFLOADER
         const loader = new GLTFLoader().setPath('/resources/drum/');
         loader.load('scene.gltf', (gltf) => {
-            gltf.scene.scale.set(0.1, 0.1, 0.1);
+            gltf.scene.scale.set(0.3, 0.3, 0.3);
             gltf.scene.position.set(0, 0, 0);
             let y_angle = 180;
             y_angle = y_angle * 3.14 / 180.0;
             gltf.scene.rotation.set(0, y_angle, 0);
             this.scene.add(gltf.scene);
+            console.log(this.scene)
 
-            this.cymbalL = this.scene.getObjectByName("cymbalLdisk001");
-            this.cymbalR = this.scene.getObjectByName("cymbalRdisk001");
-            this.snare = this.scene.getObjectByName("snare003")
-            this.tumL = this.scene.getObjectByName("tumL001")
-            this.tumR = this.scene.getObjectByName("tumR001")
-            this.tumF = this.scene.getObjectByName("floor_tum001")
-            //this.hi_hat = this.scene.getObjectByName("hi-hat.upperdisk.004");
-            //this.bass = this.scene.getObjectByName("bassdrum.004")
-            this.drums.push(this.cymbalL);
-            this.drums.push(this.cymbalR);
-            this.drums.push(this.snare);
-            this.drums.push(this.tumL);
-            this.drums.push(this.tumR);
-            this.drums.push(this.tumF);
-
-            this.drumAudios.push("/resources/drumAudio/hihat.wav")
-            this.drumAudios.push("/resources/drumAudio/kick.wav")
-            this.drumAudios.push("/resources/drumAudio/snare.wav")
-
+          
+            this.pushDrumComponentwithSound("/resources/drumAudio/cymbalL.wav", "cymbalLdisk001", audioLoader, listener)
+            this.pushDrumComponentwithSound("/resources/drumAudio/cymbalR.wav", "cymbalRdisk001", audioLoader, listener)
+            this.pushDrumComponentwithSound("/resources/drumAudio/kick.wav", "floor_tum001", audioLoader, listener)
+            this.pushDrumComponentwithSound("/resources/drumAudio/snare.wav", "snare003", audioLoader, listener)
+            this.pushDrumComponentwithSound("/resources/drumAudio/tumL.wav", "tumL001", audioLoader, listener)
+            this.pushDrumComponentwithSound("/resources/drumAudio/tumR.wav", "tumR001", audioLoader, listener)
         })
-    }
-    musicLoader(sourceNum, audioLoader){
         
-        audioLoader.load( sourceNum, function( buffer ) {
-            this.sound.setBuffer( buffer );
-            this.sound.setLoop( true );
-            this.sound.setVolume( 0.5 );
-            this.sound.play();
+    }
+
+    pushDrumComponentwithSound(audioName, drumName, audioLoader, listener){
+        audioLoader.load( audioName, ( buffer )=> {
+            
+            const sound = new THREE.Audio( listener );
+            sound.setBuffer( buffer );
+            sound.setLoop( true );
+            sound.setVolume( 0.5 );
+            
+            let object = this.scene.getObjectByName(drumName);
+            //console.log(object)
+            this.drums.push({
+                object : object,
+                sound : sound,
+                collided :false
+            });
         });
     }
+
     handleCollisions(partners, controllers) {
         const box = new THREE.Box3();
         let v = new THREE.Vector3(); // vector temp for compare collision
-        const audioLoader = new THREE.AudioLoader();
         let drumNum = 0;
+
         // TODO :
         // Partner의 controller와 drum의 충돌처리
-        for (let i = 0; i < this.drums.length; i++) {
-            this.drums[i].collided = false;
-        }
-    
+
         for(let j =0; j < partners.length; j++){
             for(let g =0; g < partners[j].partner.children.length; g++){ // partner의 손1, 손2
                 for (let i = 0; i < this.drums.length; i++) { //drum component의 길이
@@ -74,9 +71,9 @@ class Drum{
                         // console.log("접촉함!!!!")// 제대로 작동함
                         drumComponent.material.emissive.b = 1;
                         drumComponent.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
-                        
-                        this.drums[i].collided = true;
-
+                        drumComponent.collided = true;
+                        drumComponent.sound.play();
+                        console.log(drumComponent)
                     }
                 }
             }
@@ -108,8 +105,10 @@ class Drum{
                         gamepad.hapticActuators[0].pulse(0.5, 100);
                     }
                     controller.colliding = true;
-                    this.drums[i].collided = true;
-                    this.drumNum=1; // 여기 수정해야함
+                    drumComponent.collided = true;
+                    drumComponent.sound.play();
+                    
+
                 }
             }
         }
@@ -120,7 +119,6 @@ class Drum{
                 // reset uncollided boxes
                 drumComponent.material.emissive.b = 0;
                 drumComponent.scale.setScalar(1);
-    
             }
     
         }
