@@ -312,7 +312,7 @@ function animate() {
 
 // }
 
-<<<<<<< HEAD
+
 
 function partnerCollisions(){ 
 
