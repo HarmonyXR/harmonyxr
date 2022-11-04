@@ -60,7 +60,7 @@ class Drum{
             for(let g =0; g < partners[j].partner.children.length; g++){ // partner의 손1, 손2
                 for (let i = 0; i < this.drums.length; i++) { //drum component의 길이
                     const drumComponent = this.drums[i];
-                    box.setFromObject(drumComponent);
+                    box.setFromObject(drumComponent.object);
                     partners[j].partner.children[g].getWorldPosition(v);
                     const sphere = {
                         radius: 0.03,
@@ -69,10 +69,10 @@ class Drum{
                     // console.log(v)
                     if (box.intersectsSphere(sphere)) { 
                         // console.log("접촉함!!!!")// 제대로 작동함
-                        drumComponent.material.emissive.b = 1;
-                        drumComponent.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
-                        drumComponent.collided = true;
-                        drumComponent.sound.play();
+                        drumComponent.object.material.emissive.b = 1;
+                        drumComponent.object.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
+                        drumComponent.object.collided = true;
+                        drumComponent.object.sound.play();
                         console.log(drumComponent)
                     }
                 }
@@ -95,17 +95,17 @@ class Drum{
     
             for (let i = 0; i < this.drums.length; i++) {
                 const drumComponent = this.drums[i];
-                box.setFromObject(drumComponent);
+                box.setFromObject(drumComponent.object);
                 if (box.intersectsSphere(sphere)) {
     
-                    drumComponent.material.emissive.b = 1;
-                    drumComponent.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
+                    drumComponent.object.material.emissive.b = 1;
+                    drumComponent.object.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
     
-                    if (supportHaptic) {
-                        gamepad.hapticActuators[0].pulse(0.5, 100);
-                    }
+                    // if (supportHaptic) {
+                    //     gamepad.hapticActuators[0].pulse(0.5, 100);
+                    // }
                     controller.colliding = true;
-                    drumComponent.collided = true;
+                    drumComponent.object.collided = true;
                     drumComponent.sound.play();
                     
 
@@ -115,10 +115,10 @@ class Drum{
     
         for (let i = 0; i < this.drums.length; i++) {
             const drumComponent = this.drums[i];
-            if (!drumComponent.collided) {
+            if (!drumComponent.object.collided) {
                 // reset uncollided boxes
-                drumComponent.material.emissive.b = 0;
-                drumComponent.scale.setScalar(1);
+                drumComponent.object.material.emissive.b = 0;
+                drumComponent.object.scale.setScalar(1);
             }
     
         }
