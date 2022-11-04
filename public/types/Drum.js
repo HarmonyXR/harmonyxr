@@ -35,7 +35,6 @@ class Drum{
             
             const sound = new THREE.Audio( listener );
             sound.setBuffer( buffer );
-            sound.setLoop( true );
             sound.setVolume( 0.5 );
             
             let object = this.scene.getObjectByName(drumName);
