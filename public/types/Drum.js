@@ -7,7 +7,6 @@ class Drum{
         this.drums = new Array();
         this.drumAudios = new Array();
         this.sound = sound;
-        const audioLoader = new THREE.AudioLoader();
         
          // GLTFLOADER
         const loader = new GLTFLoader().setPath('/resources/drum/');
@@ -52,6 +51,7 @@ class Drum{
     handleCollisions(partners, controllers) {
         const box = new THREE.Box3();
         let v = new THREE.Vector3(); // vector temp for compare collision
+        const audioLoader = new THREE.AudioLoader();
         let drumNum = 0;
         // TODO :
         // Partner의 controller와 drum의 충돌처리
@@ -112,6 +112,7 @@ class Drum{
                     }
                     controller.colliding = true;
                     this.drums[i].collided = true;
+                    this.drumNum=1; // 여기 수정해야함
                 }
             }
     
@@ -119,7 +120,7 @@ class Drum{
                 if (!controller.playing) {
                     controller.playing = true;
                     //oscillators[g].connect(audioCtx.destination);
-                    this.musicLoader(this.drumNum, this.audioLoader)
+                    this.musicLoader(this.drumNum, audioLoader)
     
                 }
     
@@ -128,6 +129,7 @@ class Drum{
                 if (controller.playing) {
                     controller.playing = false;
                     //oscillators[g].disconnect(audioCtx.destination);
+                    this.musicLoader(this.drumNum, audioLoader)
     
                 }
     
@@ -139,7 +141,6 @@ class Drum{
     
             const drumComponent = this.drums[i];
             if (!drumComponent.collided) {
-    
                 // reset uncollided boxes
                 drumComponent.material.emissive.b = 0;
                 drumComponent.scale.setScalar(1);
