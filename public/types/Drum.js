@@ -73,9 +73,7 @@ class Drum{
                     if (box.intersectsSphere(sphere)) { 
                         // console.log("접촉함!!!!")// 제대로 작동함
                         drumComponent.material.emissive.b = 1;
-                        drumComponent.scale.setScalar(1 + Math.random() * 0.1 * intensity);
-
-                        const intensity = drumComponent.userData.index / this.drums.length; //What's for intensitiy?
+                        drumComponent.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
                         
                         this.drums[i].collided = true;
 
@@ -104,41 +102,19 @@ class Drum{
                 if (box.intersectsSphere(sphere)) {
     
                     drumComponent.material.emissive.b = 1;
-                    drumComponent.scale.setScalar(1 + Math.random() * 0.1 * intensity);
-                    const intensity = drumComponent.userData.index / this.drums.length;
+                    drumComponent.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
     
                     if (supportHaptic) {
-                        gamepad.hapticActuators[0].pulse(intensity, 100);
+                        gamepad.hapticActuators[0].pulse(0.5, 100);
                     }
                     controller.colliding = true;
                     this.drums[i].collided = true;
                     this.drumNum=1; // 여기 수정해야함
                 }
             }
-    
-            if (controller.colliding) {
-                if (!controller.playing) {
-                    controller.playing = true;
-                    //oscillators[g].connect(audioCtx.destination);
-                    this.musicLoader(this.drumNum, audioLoader)
-    
-                }
-    
-            } else {
-    
-                if (controller.playing) {
-                    controller.playing = false;
-                    //oscillators[g].disconnect(audioCtx.destination);
-                    this.musicLoader(this.drumNum, audioLoader)
-    
-                }
-    
-            }
-    
         }
     
         for (let i = 0; i < this.drums.length; i++) {
-    
             const drumComponent = this.drums[i];
             if (!drumComponent.collided) {
                 // reset uncollided boxes
