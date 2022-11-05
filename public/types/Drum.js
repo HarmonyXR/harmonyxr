@@ -11,7 +11,7 @@ class Drum{
          // GLTFLOADER
         const loader = new GLTFLoader().setPath('/resources/drum/');
         loader.load('scene.gltf', (gltf) => {
-            gltf.scene.scale.set(0.3, 0.3, 0.3);
+            gltf.scene.scale.set(0.1, 0.1, 0.1);
             gltf.scene.position.set(0, 0, 0);
             let y_angle = 180;
             y_angle = y_angle * 3.14 / 180.0;
@@ -68,9 +68,7 @@ class Drum{
                     };
                     // console.log(v)
                     if (box.intersectsSphere(sphere)) { 
-                        // console.log("접촉함!!!!")// 제대로 작동함
-                        // drumComponent.object.material.emissive.b = 1;
-                        //drumComponent.object.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
+                        drumComponent.object.scale.setScalar(1.15);
                         drumComponent.object.collided = true;
                         drumComponent.object.sound.play();
                         console.log(drumComponent)
@@ -99,12 +97,9 @@ class Drum{
                 box.setFromObject(drumComponent.object);
                 if (box.intersectsSphere(sphere)) {
     
-                    // drumComponent.object.material.emissive.b = 1;
-                    //drumComponent.object.scale.setScalar(1 + Math.random() * 0.1 * 0.5);
-    
-                    // if (supportHaptic) {
-                    //     gamepad.hapticActuators[0].pulse(0.5, 100);
-                    // }
+                    
+                    drumComponent.object.scale.setScalar(1.15);
+
                     controller.colliding = true;
                     drumComponent.object.collided = true;
                     drumComponent.sound.play();
@@ -118,8 +113,8 @@ class Drum{
             const drumComponent = this.drums[i];
             if (!drumComponent.object.collided) {
                 // reset uncollided boxes
-                // drumComponent.object.material.emissive.b = 0;
-                //drumComponent.object.scale.setScalar(1);
+
+                drumComponent.object.scale.setScalar(1);
             }
     
         }
