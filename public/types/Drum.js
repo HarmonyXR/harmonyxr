@@ -50,7 +50,6 @@ class Drum{
     handleCollisions(partners, controllers) {
         const box = new THREE.Box3();
         let v = new THREE.Vector3(); // vector temp for compare collision
-        let drumNum = 0;
 
         for(let j=0; j<this.drums.length ; j++){
             this.drums[j].object.collided=false;
@@ -70,8 +69,10 @@ class Drum{
                     if (box.intersectsSphere(sphere)) { 
                         drumComponent.object.scale.setScalar(1.15);
                         drumComponent.object.collided = true;
-                        drumComponent.object.sound.play();
-                        console.log(drumComponent)
+                        //drumComponent.object.isPlaying =true;
+                        drumComponent.sound.play();
+                        //drumComponent.sound.onEnded()
+                        //console.log(drumComponent)
                     }
                 }
             }
@@ -89,37 +90,40 @@ class Drum{
                 radius: 0.03,
                 center: grip.position
             };
-            
-            // const supportHaptic = 'hapticActuators' in gamepad && gamepad.hapticActuators != null && gamepad.hapticActuators.length > 0;
     
             for (let i = 0; i < this.drums.length; i++) {
                 const drumComponent = this.drums[i];
                 box.setFromObject(drumComponent.object);
                 if (box.intersectsSphere(sphere)) {
-    
                     
                     drumComponent.object.scale.setScalar(1.15);
 
                     controller.colliding = true;
                     drumComponent.object.collided = true;
+                    //drumComponent.object.isPlaying =true;
                     drumComponent.sound.play();
                     
-
                 }
             }
         }
     
         for (let i = 0; i < this.drums.length; i++) {
             const drumComponent = this.drums[i];
-            if (!drumComponent.object.collided) {
-                // reset uncollided boxes
-
+             // reset uncollided boxes
+             // collision이 일어나지 않은 component들은 소리를 당장 끄는 것이 맞음
+            if (!drumComponent.object.collided && drumComponent.sound.isPlaying) {
+                drumComponent.sound.stop();
                 drumComponent.object.scale.setScalar(1);
+            }
+            // Collision이 일어난 것들은 한번 울리는 걸 기다려주고 소리
+            else if (drumComponent.object.collided && !drumComponent.sound.isPlaying){
+                drumComponent.sound.play();
+                drumComponent.object.scale.setScalar(1.15);
             }
     
         }
     }
-   
+
 
 }
 export{Drum}
