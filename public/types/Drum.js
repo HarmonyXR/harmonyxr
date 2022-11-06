@@ -52,7 +52,7 @@ class Drum{
         let v = new THREE.Vector3(); // vector temp for compare collision
 
         for(let j=0; j<this.drums.length ; j++){
-            this.drums[j].object.collided=false;
+            this.drums[j].collided=false;
         }
 
         for(let j =0; j < partners.length; j++){
@@ -67,7 +67,8 @@ class Drum{
                     };
                     // console.log(v)
                     if (box.intersectsSphere(sphere)) { 
-                        drumComponent.object.collided = true;
+                        console.log("partner collision")
+                        drumComponent.collided = true;
                         //console.log(drumComponent)
                     }
                 }
@@ -89,8 +90,9 @@ class Drum{
                 const drumComponent = this.drums[i];
                 box.setFromObject(drumComponent.object);
                 if (box.intersectsSphere(sphere)) {
+                    console.log("controller collision")
                     controller.colliding = true;
-                    drumComponent.object.collided = true;
+                    drumComponent.collided = true;
                     
                 }
             }
@@ -99,17 +101,23 @@ class Drum{
         for (let i = 0; i < this.drums.length; i++) {
             const drumComponent = this.drums[i];
              // reset uncollided boxes
-            if (!drumComponent.object.collided && drumComponent.playing) {
+            if (!drumComponent.collided && drumComponent.playing) {
                 // drumComponent.object.scale.set(1.0);
                 drumComponent.playing = false;
+                // console.log(drumComponent)
+                // console.log("playing false")
             }
-            else if (drumComponent.object.collided && !drumComponent.playing)
+            else if (drumComponent.collided && !drumComponent.playing) {
                 // drumComponent.object.scale.set(1.1);
                 drumComponent.playing = true;
                 if(drumComponent.sound.isPlaying){
+                    // console.log(drumComponent)
+                    // console.log("sound stop")
                     drumComponent.sound.stop();
                 }
+                console.log("sound play")
                 drumComponent.sound.play();
+            }
         }
     }
 
