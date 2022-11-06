@@ -100,15 +100,14 @@ class Drum{
     
         for (let i = 0; i < this.drums.length; i++) {
             const drumComponent = this.drums[i];
+            // console.log(drumComponent)
              // reset uncollided boxes
             if (!drumComponent.collided && drumComponent.playing) {
-                drumComponent.object.scale.set(1.0,1.0,1.0);
                 drumComponent.playing = false;
                 // console.log(drumComponent)
                 // console.log("playing false")
             }
             else if (drumComponent.collided && !drumComponent.playing) {
-                drumComponent.object.scale.set(1.2,1.2,1.2); // scene.scale의 사이즈인 (0.2,0.2,0.2)를 뜻함
                 drumComponent.playing = true;
                 if(drumComponent.sound.isPlaying){
                     // console.log(drumComponent)
@@ -117,7 +116,6 @@ class Drum{
                 }
                 console.log("sound play")
                 drumComponent.sound.play();
-                console.log(drumComponent)
             }
         }
     }
