@@ -62,7 +62,7 @@ class Drum{
                     box.setFromObject(drumComponent.object);
                     partners[j].partner.children[g].getWorldPosition(v);
                     const sphere = {
-                        radius: 0.03,
+                        radius: 0.02,
                         center: v
                     };
                     // console.log(v)
@@ -82,7 +82,7 @@ class Drum{
             controller.colliding = false;
             const { grip, gamepad } = controller;
             const sphere = {
-                radius: 0.03,
+                radius: 0.02,
                 center: grip.position
             };
     
@@ -102,13 +102,13 @@ class Drum{
             const drumComponent = this.drums[i];
              // reset uncollided boxes
             if (!drumComponent.collided && drumComponent.playing) {
-                // drumComponent.object.scale.set(1.0);
+                drumComponent.object.scale.set(1.0);
                 drumComponent.playing = false;
                 // console.log(drumComponent)
                 // console.log("playing false")
             }
             else if (drumComponent.collided && !drumComponent.playing) {
-                // drumComponent.object.scale.set(1.1);
+                drumComponent.object.scale.set(1.1);
                 drumComponent.playing = true;
                 if(drumComponent.sound.isPlaying){
                     // console.log(drumComponent)
