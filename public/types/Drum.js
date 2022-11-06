@@ -11,9 +11,9 @@ class Drum{
          // GLTFLOADER
         const loader = new GLTFLoader().setPath('/resources/drum/');
         loader.load('scene.gltf', (gltf) => {
-            gltf.scene.scale.set(0.2, 0.2, 0.2);
-            gltf.scene.position.set(0, 0, 0);
-            let y_angle = 180;
+            gltf.scene.scale.set(0.25, 0.25, 0.25);
+            gltf.scene.position.set(0, 0.25, -0.3);
+            let y_angle = 0;
             y_angle = y_angle * 3.14 / 180.0;
             gltf.scene.rotation.set(0, y_angle, 0);
             this.scene.add(gltf.scene);

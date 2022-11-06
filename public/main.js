@@ -228,13 +228,11 @@ function animate() {
 
 function handleCollisions() {
 
-
     for (let i = 0; i < group.children.length; i++) {
 
         group.children[i].collided = false;
 
     }
-
 
     for (let g = 0; g < controllers.length; g++) {
 
@@ -269,11 +267,11 @@ function handleCollisions() {
                 controller.colliding = true;
                 group.children[i].collided = true;
 
+            }
+
+        }
 
 
-//         if (controller.colliding) {
-
-//             if (!controller.playing) {
 
         if (controller.colliding) {
 
@@ -312,9 +310,6 @@ function handleCollisions() {
 
 }
 
-
-// }
-
 function partnerCollisions(){ 
 
     for (let i = 0; i < group.children.length; i++) {
@@ -341,9 +336,7 @@ function partnerCollisions(){
                     // oscillators[g].frequency.value = 110 * Math.pow(2, musicInterval / 12);
                     // controller.colliding = true;
                     group.children[i].collided = true;
-
                 }
-
             }
         }
     }
@@ -355,9 +348,8 @@ function render() {
     musicRoom.LightTargetPattrol();
     musicRoom.NeonStickAnimation();
     // handleCollisions();
-    // partnerCollisions(); //파트너가 실로폰에 닿으면 console에 log가 뜹니다. 하지만 실로폰이 떨리진 않음. 이유는 모르겠습니다...
+    // partnerCollisions(); 
     drum.handleCollisions(partners, controllers);
-
     if(cnt == 1 ) {
         cnt = 0;
         networking.broadcastToPlayers();
