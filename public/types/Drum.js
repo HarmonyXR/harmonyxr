@@ -11,7 +11,7 @@ class Drum{
          // GLTFLOADER
         const loader = new GLTFLoader().setPath('/resources/drum/');
         loader.load('scene.gltf', (gltf) => {
-            gltf.scene.scale.set(0.1, 0.1, 0.1);
+            gltf.scene.scale.set(0.2, 0.2, 0.2);
             gltf.scene.position.set(0, 0, 0);
             let y_angle = 180;
             y_angle = y_angle * 3.14 / 180.0;
@@ -34,7 +34,7 @@ class Drum{
             
             const sound = new THREE.Audio( listener );
             sound.setBuffer( buffer );
-            sound.setVolume( 1 );
+            sound.setVolume( 0.8 );
             sound.setLoop(false);
             let object = this.scene.getObjectByName(drumName);
             //console.log(object)
@@ -100,11 +100,11 @@ class Drum{
             const drumComponent = this.drums[i];
              // reset uncollided boxes
             if (!drumComponent.object.collided && drumComponent.playing) {
-                drumComponent.object.scale.set(1.0);
+                // drumComponent.object.scale.set(1.0);
                 drumComponent.playing = false;
             }
             else if (drumComponent.object.collided && !drumComponent.playing)
-                drumComponent.object.scale.set(1.1);
+                // drumComponent.object.scale.set(1.1);
                 drumComponent.playing = true;
                 if(drumComponent.sound.isPlaying){
                     drumComponent.sound.stop();
