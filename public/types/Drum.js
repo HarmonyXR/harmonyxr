@@ -42,7 +42,8 @@ class Drum{
             this.drums.push({
                 object : object,
                 sound : sound,
-                collided :false
+                collided :false,
+                playing : false
             });
         });
     }
@@ -67,12 +68,7 @@ class Drum{
                     };
                     // console.log(v)
                     if (box.intersectsSphere(sphere)) { 
-                        drumComponent.object.scale.set(1.1);
                         drumComponent.object.collided = true;
-                        if(drumComponent.sound.isPlaying){
-                            drumComponent.sound.stop();
-                        }
-                        drumComponent.sound.play();
                         //console.log(drumComponent)
                     }
                 }
@@ -94,15 +90,10 @@ class Drum{
                 const drumComponent = this.drums[i];
                 box.setFromObject(drumComponent.object);
                 if (box.intersectsSphere(sphere)) {
-                    
-                    drumComponent.object.scale.set(1.1);
 
                     controller.colliding = true;
                     drumComponent.object.collided = true;
-                    if(drumComponent.sound.isPlaying){
-                        drumComponent.sound.stop();
-                    }
-                    drumComponent.sound.play();
+                    
                 }
             }
         }
@@ -110,15 +101,17 @@ class Drum{
         for (let i = 0; i < this.drums.length; i++) {
             const drumComponent = this.drums[i];
              // reset uncollided boxes
-            if (!drumComponent.object.collided) {
+            if (!drumComponent.object.collided && drumComponent.playing) {
                 drumComponent.object.scale.set(1.0);
+                drumComponent.playing = false;
             }
-            // Collision이 일어난 것들은 한번 울리는 걸 기다려주고 소리
-            // else if (drumComponent.object.collided && !drumComponent.sound.isPlaying){
-            //     drumComponent.sound.play();
-            //     drumComponent.object.scale.setScalar(1.15);
-            // }
-    
+            else if (drumComponent.object.collided && !drumComponent.playing)
+                drumComponent.object.scale.set(1.1);
+                drumComponent.playing = true;
+                if(drumComponent.sound.isPlaying){
+                    drumComponent.sound.stop();
+                }
+                drumComponent.sound.play();
         }
     }
 
