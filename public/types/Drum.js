@@ -116,10 +116,10 @@ class Drum{
                 drumComponent.object.scale.setScalar(1);
             }
             // Collision이 일어난 것들은 한번 울리는 걸 기다려주고 소리
-            else if (drumComponent.object.collided && !drumComponent.sound.isPlaying){
-                drumComponent.sound.play();
-                drumComponent.object.scale.setScalar(1.15);
-            }
+            // else if (drumComponent.object.collided && !drumComponent.sound.isPlaying){
+            //     drumComponent.sound.play();
+            //     drumComponent.object.scale.setScalar(1.15);
+            // }
     
         }
     }
