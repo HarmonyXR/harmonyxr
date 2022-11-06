@@ -35,8 +35,8 @@ class Drum{
             
             const sound = new THREE.Audio( listener );
             sound.setBuffer( buffer );
-            sound.setVolume( 0.5 );
-            
+            sound.setVolume( 1 );
+            sound.setLoop(false)
             let object = this.scene.getObjectByName(drumName);
             //console.log(object)
             this.drums.push({
@@ -67,11 +67,12 @@ class Drum{
                     };
                     // console.log(v)
                     if (box.intersectsSphere(sphere)) { 
-                        drumComponent.object.scale.setScalar(1.15);
+                        drumComponent.object.scale.set(1.1);
                         drumComponent.object.collided = true;
-                        //drumComponent.object.isPlaying =true;
+                        if(drumComponent.sound.isPlaying){
+                            drumComponent.sound.stop();
+                        }
                         drumComponent.sound.play();
-                        //drumComponent.sound.onEnded()
                         //console.log(drumComponent)
                     }
                 }
@@ -83,8 +84,6 @@ class Drum{
         for (let g = 0; g < controllers.length; g++) {
             const controller = controllers[g];
             controller.colliding = false;
-            
-    
             const { grip, gamepad } = controller;
             const sphere = {
                 radius: 0.03,
@@ -96,13 +95,14 @@ class Drum{
                 box.setFromObject(drumComponent.object);
                 if (box.intersectsSphere(sphere)) {
                     
-                    drumComponent.object.scale.setScalar(1.15);
+                    drumComponent.object.scale.set(1.1);
 
                     controller.colliding = true;
                     drumComponent.object.collided = true;
-                    //drumComponent.object.isPlaying =true;
+                    if(drumComponent.sound.isPlaying){
+                        drumComponent.sound.stop();
+                    }
                     drumComponent.sound.play();
-                    
                 }
             }
         }
@@ -110,10 +110,8 @@ class Drum{
         for (let i = 0; i < this.drums.length; i++) {
             const drumComponent = this.drums[i];
              // reset uncollided boxes
-             // collision이 일어나지 않은 component들은 소리를 당장 끄는 것이 맞음
-            if (!drumComponent.object.collided && drumComponent.sound.isPlaying) {
-                drumComponent.sound.stop();
-                drumComponent.object.scale.setScalar(1);
+            if (!drumComponent.object.collided) {
+                drumComponent.object.scale.set(1.0);
             }
             // Collision이 일어난 것들은 한번 울리는 걸 기다려주고 소리
             // else if (drumComponent.object.collided && !drumComponent.sound.isPlaying){
