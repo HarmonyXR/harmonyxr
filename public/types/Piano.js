@@ -10,9 +10,9 @@ class Piano {
     const audioLoader = new THREE.AudioLoader();
     const loader = new GLTFLoader().setPath('/resources/piano/');
     loader.load('scene.gltf', (gltf) => {
-      gltf.scene.scale.set(0.2, 0.2, 0.2);
-      gltf.scene.position.set(1, 0, 0.2);
-      let y_angle = 180;
+      gltf.scene.scale.set(0.22, 0.22, 0.22);
+      gltf.scene.position.set(2, 0.23, 0.5);
+      let y_angle = 120;
       y_angle = y_angle * 3.14 / 180.0;
       gltf.scene.rotation.set(0, y_angle, 0);
       this.object.add(gltf.scene);
