@@ -19,7 +19,6 @@ class Drum{
             this.scene.add(gltf.scene);
             console.log(this.scene)
 
-          
             this.pushDrumComponentwithSound("/resources/drumAudio/cymbalL.wav", "cymbalLdisk001", audioLoader, listener)
             this.pushDrumComponentwithSound("/resources/drumAudio/cymbalR.wav", "cymbalRdisk001", audioLoader, listener)
             this.pushDrumComponentwithSound("/resources/drumAudio/kick.wav", "floor_tum001", audioLoader, listener)
@@ -36,7 +35,7 @@ class Drum{
             const sound = new THREE.Audio( listener );
             sound.setBuffer( buffer );
             sound.setVolume( 1 );
-            sound.setLoop(false)
+            sound.setLoop(false);
             let object = this.scene.getObjectByName(drumName);
             //console.log(object)
             this.drums.push({
@@ -90,7 +89,6 @@ class Drum{
                 const drumComponent = this.drums[i];
                 box.setFromObject(drumComponent.object);
                 if (box.intersectsSphere(sphere)) {
-
                     controller.colliding = true;
                     drumComponent.object.collided = true;
                     
